@@ -92,7 +92,7 @@ gulp.task('browser-sync', () => {
   browserSync.init({
     open: false,
     injectChanges: true,
-    // proxy: 'http://borafesta.localhost/'
+    // proxy: 'http://something.localhost'
     server: {
       baseDir: './build/'
     }

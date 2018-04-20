@@ -1,1 +1,1 @@
-{"version":3,"sources":["main.scss"],"names":[],"mappings":"AAAA,KACE,oBAAqB,CACtB","file":"build.css","sourcesContent":["body {\n  background-color: red;\n}"]}
+{"version":3,"sources":["main.scss"],"names":[],"mappings":"AAAA,KACE,yCACA,WACA,0BAA2B,CAC5B","file":"build.css","sourcesContent":["body {\n  font-family: Arial, Helvetica, sans-serif;\n  color: gray;\n  background-color: lightgray;\n}"]}
