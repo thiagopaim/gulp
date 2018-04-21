@@ -3,6 +3,7 @@ const gulp            = require('gulp');
 const plumber         = require('gulp-plumber');
 const pug             = require('gulp-pug');
 const sass            = require('gulp-sass');
+const imagemin        = require('gulp-imagemin');
 const uglify          = require('gulp-uglify');
 const sourcemaps      = require('gulp-sourcemaps');
 const autoprefixer    = require('gulp-autoprefixer');
@@ -15,9 +16,10 @@ const version         = require('gulp-version-number');
 const browserSync     = require('browser-sync').create();
 
 // paths
+const srcImages       = 'src/images/**/*';
 const srcStyles       = 'src/styles/main.scss';
 const srcScripts      = 'src/scripts/main.js';
-const jsFiles         = [srcScripts]
+const jsFiles         = [srcScripts];
 
 // paths watch
 const stylesWatch     = 'src/styles/**/*.scss';
@@ -40,6 +42,15 @@ gulp.task('views', () => {
       .pipe(pug({ pretty: false }))
       .pipe(version(versionConfig))
       .pipe(gulp.dest('./build/'))
+      .pipe(browserSync.stream())
+});
+
+// compress images
+gulp.task('images', () => {
+  gulp.src(srcImages)
+    .pipe(imagemin())
+    .pipe(gulp.dest('./build/images/'))
+    .pipe(browserSync.stream())
 });
 
 // styles
@@ -93,6 +104,7 @@ gulp.task('browser-sync', () => {
     open: false,
     injectChanges: true,
     // proxy: 'http://something.localhost'
+    // or:
     server: {
       baseDir: './build/'
     }
@@ -100,9 +112,11 @@ gulp.task('browser-sync', () => {
 });
 
 // get shit done
-gulp.task('default', ['styles', 'scripts', 'views']);
-gulp.task('watch', ['default', 'browser-sync'], () => {
-  gulp.watch(stylesWatch, ['styles']);
+// init with gulp run
+gulp.task('default', ['styles', 'scripts', 'views', 'images']);
+gulp.task('run', ['default', 'browser-sync'], () => {
+  gulp.watch(stylesWatch, ['styles', browserSync.reload]);
   gulp.watch(scriptsWatch, ['scripts', browserSync.reload]);
   gulp.watch(viewsWatch, ['views', browserSync.reload]);
+  gulp.watch(srcImages, ['imges', browserSync.reload]);
 });
